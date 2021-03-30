@@ -22,6 +22,9 @@ class InjectedTests: XCTestCase {
     func testRepositoriesInjection() throws {
         let authRepository = Resolver.optional(AuthRepository.self)
         XCTAssertNotNil(authRepository, "Auth Repository was not registered")
+        
+        let newsRepository = Resolver.optional(NewsRepository.self)
+        XCTAssertNotNil(newsRepository, "News Repository was not registered")
     }
     
     func testUseCasesInjection() throws {
@@ -33,11 +36,19 @@ class InjectedTests: XCTestCase {
         
         let signupUseCase = Resolver.optional(SignupUseCase.self)
         XCTAssertNotNil(signupUseCase, "Signup UseCase was not registered")
+        
+        let getNewsUseCase = Resolver.optional(GetNewsUseCase.self)
+        XCTAssertNotNil(getNewsUseCase, "GetNews UseCase was not registered")
+        
+        let getHighlightsUseCase = Resolver.optional(GetHighlightsUseCase.self)
+        XCTAssertNotNil(getHighlightsUseCase, "GetHighlights UseCase was not registered")
     }
         
     func testServicesInjection() throws {
         let authNetworkService = Resolver.optional(AuthNetworkService.self)
         XCTAssertNotNil(authNetworkService, "AuthNetwork Service was not registered")
         
+        let newsNetworkService = Resolver.optional(NewsNetworkService.self)
+        XCTAssertNotNil(newsNetworkService, "NewsNetwork Service was not registered")
     }
 }

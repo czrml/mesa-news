@@ -18,6 +18,9 @@ extension Resolver: ResolverRegistering {
     public static func registerRepositoriesInjection() {
         register { DefaultAuthRepository(networkService: resolve()) as AuthRepository }
             .scope(.application)
+        
+        register { DefaultNewsRepository(networkService: resolve()) as NewsRepository }
+            .scope(.application)
     }
     
     public static func registerUseCasesInjection() {
@@ -29,10 +32,19 @@ extension Resolver: ResolverRegistering {
         
         register { DefaultSignupUseCase(repository: resolve()) as SignupUseCase }
             .scope(.application)
+        
+        register { DefaultGetNewsUseCase(repository: resolve()) as GetNewsUseCase }
+            .scope(.application)
+        
+        register { DefaultGetHighlightsUseCase(repository: resolve()) as GetHighlightsUseCase }
+            .scope(.application)
     }
     
     public static func registerServicesInjection() {
         register { DefaultAuthNetworkService() as AuthNetworkService }
+            .scope(.application)
+        
+        register { DefaultNewsNetworkService() as NewsNetworkService }
             .scope(.application)
     }
 }
