@@ -1,0 +1,35 @@
+input_dir: MesaNews/Resources
+output_dir: MesaNews/Resources/
+
+strings:
+  inputs: L10n.strings
+  filter: .+\.strings$
+  outputs:
+    - templateName: structured-swift5
+      output: L10n.generated.swift
+      params:
+        enumName: MesaStrings
+
+xcassets:
+  - inputs: Images.xcassets
+    allValues: allImages
+    outputs:
+      - templateName: swift5
+        output: Images.generated.swift
+        params:
+          enumName: MesaImages
+  - inputs: Colors.xcassets
+    allValues: allColors
+    outputs:
+      - templateName: swift5
+        output: Colors.generated.swift
+        params:
+          enumName: MesaColors
+          
+plist:
+  - inputs: Configuration.plist
+    outputs:
+      - templateName: inline-swift5
+        output: Configuration.generated.swift
+        params:
+          enumName: MesaConfig

@@ -1,0 +1,149 @@
+name: MesaNews
+
+options:
+    minimumXcodeGenVersion: 2.19
+
+    # Code formatting
+    usesTabs: false
+    indentWidth: 4
+    tabWidth: 4
+
+    # Project Settings
+    xcodeVersion: 12
+    deploymentTarget:
+        iOS: "11.0"
+    createIntermediateGroups: true
+    generateEmptyDirectories: true
+    bundleIdPrefix: "io.czrml.tests.mesa-news"
+
+    groupOrdering:
+      - pattern: "MesaNews/*"
+        order: [Sources, Resources]
+      - pattern: "MesaNews/Sources/*"
+        order: [Domain, Flows, Scenes, Data]
+
+configs:
+    Debug: debug
+    Release: release
+
+targetTemplates:
+    MesaNews-Default:
+        platform: iOS
+        type: application
+
+        # Sources
+        sources:
+            - path: MesaNews
+            - path: MesaNews/Resources/L10n.generated.swift
+              optional: true
+            - path: MesaNews/Resources/Images.generated.swift
+              optional: true
+            - path: MesaNews/Resources/Colors.generated.swift
+              optional: true
+            - path: MesaNews/Resources/Configuration.generated.swift
+              optional: true
+              
+        # Settings
+        settings:
+            INFOPLIST_FILE: "MesaNews/Resources/Info.plist"
+            TARGETED_DEVICE_FAMILY: 1
+            IPHONEOS_DEPLOYMENT_TARGET: 11
+            ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+            ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: true
+      
+        transitivelyLinkDependencies: true
+        requiresObjCLinking: true
+
+        dependencies:
+            - package: SnapKit
+            - package: RxSwift
+            - package: RxSwift
+              product: RxCocoa
+            - package: Moya
+            - package: RxDataSources
+            - package: Kingfisher
+            - package: Resolver
+
+        # scripts
+        postCompileScripts:
+            # swiftlint
+            - script: >
+                export PATH="$PATH:/opt/homebrew/bin"
+
+                if which swiftlint >/dev/null;
+                  then swiftlint
+                else
+                  echo "warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint"
+                fi
+              name: Swiftlint
+targets:
+    ## Developer Target
+    MesaNews Dev:
+        templates: 
+              - MesaNews-Default
+
+        settings:
+            PRODUCT_BUNDLE_IDENTIFIER: "io.czrml.tests.mesa-news.dev"
+            ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon.dev
+            OTHER_SWIFT_FLAGS: "-DDEV"
+        
+        # Unit testing schemes
+        scheme:
+            gatherCoverageData: true
+            testTargets:
+                - name: MesaNews Tests
+                  parallelizable: true
+                  randomExecutionOrder: true
+            
+    ## Distribution Target
+    MesaNews:
+        templates: 
+            - MesaNews-Default
+        
+        settings:
+            PRODUCT_BUNDLE_IDENTIFIER: "io.czrml.tests.mesa-news.app"
+            OTHER_SWIFT_FLAGS: "-DPROD"
+    
+    ## Unit Test Target
+    MesaNews Tests:
+        platform: iOS
+        type: bundle.unit-test
+        deploymentTarget: "11.0"
+
+        settings:
+            ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: true
+            OTHER_LDFLAGS: $(inherited) -ObjC
+
+        transitivelyLinkDependencies: true
+        requiresObjCLinking: true
+
+        sources:
+            - path: MesaNewsTests
+        
+        dependencies:
+            - target: MesaNews Dev
+            
+        scheme:
+            testTargets:
+              - MesaNews Tests
+            gatherCoverageData: true
+
+packages:
+    SnapKit:
+        url: https://github.com/SnapKit/SnapKit.git
+        from: 5.0.1
+    Moya:
+        url: https://github.com/Moya/Moya
+        branch: development
+    RxSwift:
+        url: https://github.com/ReactiveX/RxSwift.git
+        from: 6.1.0
+    RxDataSources:
+        url: https://github.com/RxSwiftCommunity/RxDataSources.git
+        from: 5.0.0
+    Kingfisher:
+        url: https://github.com/onevcat/Kingfisher.git
+        from: 6.1.0
+    Resolver:
+        url: https://github.com/hmlongco/Resolver.git
+        from: 1.4.0

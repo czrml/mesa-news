@@ -1,0 +1,27 @@
+/* 
+  L10n.strings
+  MesaNews
+
+  Created by Cezar Mauricio on 30/03/21.
+  
+*/
+
+"error.unknown" = "Um erro desconhecido ocorreu, tente novamente mais tarde!";
+
+"login.title" = "Entrar";
+"login.signup" = "Criar Conta";
+"login.login" = "Login";
+"login.email" = "Email";
+"login.password" = "Senha";
+
+"signup.title" = "Criar conta";
+"signup.name" = "Nome";
+"signup.email" = "Email";
+"signup.password" = "Senha";
+"signup.signup" = "Criar conta";
+
+"feed.logout" = "Sair";
+"feed.loading" = "Carregando...";
+"feed.empty.news" = "📰 Não existe nenhuma noticia";
+"feed.empty.filter" = "🔎 Não existe nenhuma noticia para o filtro selecionado";
+"feed.empty.favorites" = "🔖 Não existe nenhum favorito salvo\nadicione um favorito usando botão ❤️";
