@@ -63,6 +63,7 @@ targetTemplates:
             - package: RxDataSources
             - package: Kingfisher
             - package: Resolver
+            - package: KeychainAccess
 
         # scripts
         postCompileScripts:
@@ -133,17 +134,20 @@ packages:
         url: https://github.com/SnapKit/SnapKit.git
         from: 5.0.1
     Moya:
-        url: https://github.com/Moya/Moya
+        url: https://github.com/Moya/Moya.git
         branch: development
     RxSwift:
         url: https://github.com/ReactiveX/RxSwift.git
         from: 6.1.0
     RxDataSources:
         url: https://github.com/RxSwiftCommunity/RxDataSources.git
-        from: 5.0.0
+        from: 5.0.1
     Kingfisher:
         url: https://github.com/onevcat/Kingfisher.git
         from: 6.1.0
     Resolver:
         url: https://github.com/hmlongco/Resolver.git
         from: 1.4.0
+    KeychainAccess:
+        url: https://github.com/kishikawakatsumi/KeychainAccess.git
+        from: 4.2.2

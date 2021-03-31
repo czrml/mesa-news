@@ -9,6 +9,7 @@ import Foundation
 import RxSwift
 
 protocol AuthUseCase: UseCase {
+    var authorization: Infallible<Authorization?> { get }
     var state: Infallible<AuthState> { get }
     func login(with info: Login) -> UseCaseResult<Void>
     func signup(with info: Signup) -> UseCaseResult<Void>
@@ -19,22 +20,28 @@ final class DefaultAuthUseCase: AuthUseCase {
     
     private let disposeBag = DisposeBag()
     
-    private var authorization = BehaviorSubject<Authorization?>(value: nil)
-    
-    private var authState: Infallible<AuthState> {
-        authorization.map { $0 != nil ? .authorized : .unauthorized }.asInfallible(onErrorJustReturn: .unauthorized)
-    }
-    
     @Injected private var loginUseCase: LoginUseCase
     @Injected private var signupUseCase: SignupUseCase
+    @Injected private var getAuthUseCase: GetAuthorizationUseCase
+    @Injected private var saveAuthUseCase: SaveAuthorizationUseCase
+    @Injected private var deleteAuthUseCase: DeleteAuthorizationUseCase
+    
+    private var auth = BehaviorSubject<Authorization?>(value: nil)
+
+    var authorization: Infallible<Authorization?> { auth.asInfallible(onErrorJustReturn: nil) }
+    var state: Infallible<AuthState> { authorization.map { $0 != nil ? .authorized : .unauthorized } }
     
     private let authRepository: AuthRepository
     
     init(repository: AuthRepository) {
         self.authRepository = repository
+        
+        getAuthUseCase()
+            .compactMap { $0 }
+            .map(Authorization.init)
+            .bind(to: auth)
+            .disposed(by: disposeBag)
     }
-    
-    var state: Infallible<AuthState> { authState.asInfallible(onErrorJustReturn: .authorized) }
     
     func login(with info: Login) -> UseCaseResult<Void> {
         let login = loginUseCase(with: info)
@@ -53,15 +60,18 @@ final class DefaultAuthUseCase: AuthUseCase {
     }
     
     func logout() {
-        self.authorization.onNext(nil)
+        self.auth.onNext(nil)
+        self.deleteAuthUseCase()
     }
     
     private func handleAuthorization(result: UseCaseResultType<Authorization>) {
         guard case .success(let authorization) = result else {
-            self.authorization.onNext(nil)
+            self.auth.onNext(nil)
+            self.deleteAuthUseCase()
             return
         }
         
-        self.authorization.onNext(authorization)
+        self.saveAuthUseCase(authorization)
+        self.auth.onNext(authorization)
     }
 }

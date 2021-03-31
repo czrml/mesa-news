@@ -10,9 +10,11 @@ import Foundation
 final class DefaultAuthRepository: AuthRepository {
     
     private let networkService: AuthNetworkService
+    private let secureStorageService: AuthSecureStorageService
 
-    init(networkService: AuthNetworkService) {
+    init(networkService: AuthNetworkService, secureStorageService: AuthSecureStorageService) {
         self.networkService = networkService
+        self.secureStorageService = secureStorageService
     }
     
     func login(_ info: Login) -> RepositoryResult<Authorization> {
@@ -25,5 +27,17 @@ final class DefaultAuthRepository: AuthRepository {
         let request = SignupRequest(from: info)
         
         return networkService.signup(request: request).mapToDomain(from: TokenResponse.self)
+    }
+    
+    func getAuthorization() -> RepositoryInfallibleResult<String?> {
+        secureStorageService.getToken()
+    }
+    
+    func saveAuthorization(_ auth: Authorization) {
+        secureStorageService.save(token: auth.token)
+    }
+    
+    func deleteAuthorization() {
+        secureStorageService.delete()
     }
 }

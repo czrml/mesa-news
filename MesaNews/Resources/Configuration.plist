@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>bundleId</key>
+	<string>io.czrml.tests.mesa-news</string>
 	<key>baseUrl</key>
 	<string>https://mesa-news-api.herokuapp.com</string>
 </dict>

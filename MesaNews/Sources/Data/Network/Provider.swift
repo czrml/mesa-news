@@ -17,10 +17,12 @@ protocol MesaProviderType: AnyObject {
 
 final class MesaProvider<Target>: MesaProviderType where Target: MesaTargetType {
     
-    let tokenSource = TokenSource()
+    private let disposeBag = DisposeBag()
     
-    private lazy var provider = MoyaProvider<Target>( plugins: [ AuthPlugin(tokenClosure: { self.tokenSource.token })]
-    )
+    @Injected private var authUseCase: AuthSecureStorageService
+    
+    private lazy var authPlugin = AuthPlugin(tokenClosure: { [weak self] in self?.authUseCase.token })
+    private lazy var provider = MoyaProvider<Target>(plugins: [authPlugin])
 
     func request<T: Decodable>(_ token: Target) -> Infallible<Result<T, NetworkError>> {
         return Infallible.create { [weak self] infallible in
@@ -45,7 +47,8 @@ final class MesaProvider<Target>: MesaProviderType where Target: MesaTargetType 
                     do {
                         let decodedResponse = try decoder.decode(T.self, from: response.data)
                         infallible(.next(.success(decodedResponse)))
-                    } catch {
+                    } catch let error {
+                        print(error)
                         infallible(.next(.failure(.serverError)))
                     }
                 case .failure:
@@ -58,11 +61,6 @@ final class MesaProvider<Target>: MesaProviderType where Target: MesaTargetType 
             }
         }
     }
-}
-
-class TokenSource {
-  var token: String?
-  init() { }
 }
 
 struct AuthPlugin: PluginType {

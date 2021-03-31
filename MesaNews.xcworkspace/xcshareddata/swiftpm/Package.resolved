@@ -11,6 +11,15 @@
         }
       },
       {
+        "package": "KeychainAccess",
+        "repositoryURL": "https://github.com/kishikawakatsumi/KeychainAccess.git",
+        "state": {
+          "branch": null,
+          "revision": "84e546727d66f1adc5439debad16270d0fdd04e7",
+          "version": "4.2.2"
+        }
+      },
+      {
         "package": "Kingfisher",
         "repositoryURL": "https://github.com/onevcat/Kingfisher.git",
         "state": {
@@ -30,7 +39,7 @@
       },
       {
         "package": "Moya",
-        "repositoryURL": "https://github.com/Moya/Moya",
+        "repositoryURL": "https://github.com/Moya/Moya.git",
         "state": {
           "branch": "development",
           "revision": "e84f8a2c28874e8b50bd9db5571d094ae72a0216",

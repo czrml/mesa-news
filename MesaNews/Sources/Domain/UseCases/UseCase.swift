@@ -13,4 +13,5 @@ protocol UseCase: AnyObject { }
 extension UseCase {
     typealias UseCaseResultType<T> = Result<T, DomainError>
     typealias UseCaseResult<T> = Infallible<UseCaseResultType<T>>
+    typealias UseCaseInfallibleResult<T> = Infallible<T>
 }

@@ -19,9 +19,7 @@ final class MainFlow: FlowCoordinator {
         self.navigationController = navigationController
         navigationController.navigationBar.tintColor = MesaColors.accent.color
         navigationController.navigationBar.barTintColor = MesaColors.primaryBackground.color
-    }
-    
-    func start() {
+        
         showLoginView()
     }
     

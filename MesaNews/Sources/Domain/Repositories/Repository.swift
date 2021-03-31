@@ -12,4 +12,5 @@ protocol Repository: AnyObject { }
 
 extension Repository {
     typealias RepositoryResult<T> = Infallible<Result<T, DomainError>>
+    typealias RepositoryInfallibleResult<T> = Infallible<T>
 }

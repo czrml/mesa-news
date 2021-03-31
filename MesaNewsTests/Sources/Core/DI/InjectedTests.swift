@@ -37,6 +37,16 @@ class InjectedTests: XCTestCase {
         let signupUseCase = Resolver.optional(SignupUseCase.self)
         XCTAssertNotNil(signupUseCase, "Signup UseCase was not registered")
         
+        
+        let getAuthorizationUseCase = Resolver.optional(GetAuthorizationUseCase.self)
+        XCTAssertNotNil(getAuthorizationUseCase, "Get Authorization UseCase was not registered")
+        
+        let saveAuthorizationUseCase = Resolver.optional(SaveAuthorizationUseCase.self)
+        XCTAssertNotNil(saveAuthorizationUseCase, "Save authorization UseCase was not registered")
+        
+        let deleteAuthorizationUsecase = Resolver.optional(DeleteAuthorizationUseCase.self)
+        XCTAssertNotNil(deleteAuthorizationUsecase, "Delete authentication UseCase was not registered")
+        
         let getNewsUseCase = Resolver.optional(GetNewsUseCase.self)
         XCTAssertNotNil(getNewsUseCase, "GetNews UseCase was not registered")
         
@@ -45,6 +55,9 @@ class InjectedTests: XCTestCase {
     }
         
     func testServicesInjection() throws {
+        let authSecureStorageService = Resolver.optional(AuthSecureStorageService.self)
+        XCTAssertNotNil(authSecureStorageService, "AuthSecureStorage Service was not registered")
+        
         let authNetworkService = Resolver.optional(AuthNetworkService.self)
         XCTAssertNotNil(authNetworkService, "AuthNetwork Service was not registered")
         

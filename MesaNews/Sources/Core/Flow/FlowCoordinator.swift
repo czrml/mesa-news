@@ -10,5 +10,4 @@ import UIKit
 
 protocol FlowCoordinator {
     var navigationController: UINavigationController { get }
-    func start()
 }

@@ -10,4 +10,7 @@ import Foundation
 protocol AuthRepository: Repository {
     func login(_ info: Login) -> RepositoryResult<Authorization>
     func signup(_ info: Signup) -> RepositoryResult<Authorization>
+    func getAuthorization() -> RepositoryInfallibleResult<String?>
+    func saveAuthorization(_ auth: Authorization)
+    func deleteAuthorization()
 }

@@ -16,7 +16,7 @@ extension Resolver: ResolverRegistering {
     }
     
     public static func registerRepositoriesInjection() {
-        register { DefaultAuthRepository(networkService: resolve()) as AuthRepository }
+        register { DefaultAuthRepository(networkService: resolve(), secureStorageService: resolve()) as AuthRepository }
             .scope(.application)
         
         register { DefaultNewsRepository(networkService: resolve()) as NewsRepository }
@@ -25,6 +25,15 @@ extension Resolver: ResolverRegistering {
     
     public static func registerUseCasesInjection() {
         register { DefaultAuthUseCase(repository: resolve()) as AuthUseCase }
+            .scope(.application)
+        
+        register { DefaultGetAuthorizationUseCase(repository: resolve()) as GetAuthorizationUseCase }
+            .scope(.application)
+        
+        register { DefaultSaveAuthorizationUseCase(repository: resolve()) as SaveAuthorizationUseCase }
+            .scope(.application)
+        
+        register { DefaultDeleteAuthorizationUseCase(repository: resolve()) as DeleteAuthorizationUseCase }
             .scope(.application)
         
         register { DefaultLoginUseCase(repository: resolve()) as LoginUseCase }
@@ -41,6 +50,9 @@ extension Resolver: ResolverRegistering {
     }
     
     public static func registerServicesInjection() {
+        register { DefaultAuthSecureStorageService() as AuthSecureStorageService }
+            .scope(.application)
+        
         register { DefaultAuthNetworkService() as AuthNetworkService }
             .scope(.application)
         
